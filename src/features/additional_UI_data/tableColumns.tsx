@@ -5,6 +5,7 @@ import { BooksContext } from '../books/booksContext';
 import { Book } from '../types';
 import { Link } from 'react-router-dom';
 import { deleteBookFromServer, updateBookOnServer } from '../books/booksApi';
+import { getFormattedDate } from '../../utils/getFormattedDate';
 
 export const useTableColumns = () => {
   function handleDeleteBook(
@@ -32,6 +33,7 @@ export const useTableColumns = () => {
     );
     updateBookOnServer(record.id, {
       status: record.status === 'active' ? 'unactive' : 'active',
+      edited_at: getFormattedDate(),
     })
       .then(() => {
         setBooksList(updatedBooksList);

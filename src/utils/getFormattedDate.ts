@@ -1,4 +1,4 @@
-export function formatDate() {
+export function getFormattedDate() {
   const date = new Date();
 
   const day = date.getDate();

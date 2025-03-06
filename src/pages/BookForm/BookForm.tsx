@@ -4,7 +4,7 @@ import { useContext, useState } from 'react';
 import { Book } from '../../features/types';
 import { Link, useNavigate } from 'react-router-dom';
 import { BooksContext } from '../../features/books/booksContext';
-import { formatDate } from '../../utils/formatDate';
+import { getFormattedDate } from '../../utils/getFormattedDate';
 import {
   postBookToServer,
   updateBookOnServer,
@@ -55,7 +55,7 @@ const BookForm: React.FC<Props> = ({ type }) => {
       author: author || '',
       category: category || 'fiction',
       isbn: +isbn,
-      created_at: formatDate(),
+      created_at: getFormattedDate(),
       edited_at: "hasn't been updated yet",
     };
 
@@ -85,7 +85,7 @@ const BookForm: React.FC<Props> = ({ type }) => {
       author: author || '',
       category: category || '',
       isbn: +isbn,
-      edited_at: formatDate(),
+      edited_at: getFormattedDate(),
     };
 
     const updatedBooksList = booksList.map((book) =>
