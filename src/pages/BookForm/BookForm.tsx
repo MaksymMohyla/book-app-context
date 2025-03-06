@@ -1,9 +1,11 @@
 import st from './BookForm.module.less';
 import { Button, Form, Input, Select } from 'antd';
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useState } from 'react';
 import { Book } from '../../features/types';
 import { Link, useNavigate } from 'react-router-dom';
 import { BooksContext } from '../../features/books/booksContext';
+import { formatDate } from '../../utils/formatDate';
+import { postBookToServer } from '../../features/books/booksApi';
 
 type Props = {
   type: 'addNew' | 'edit';
@@ -13,16 +15,18 @@ const BookForm: React.FC<Props> = ({ type }) => {
   const { booksList, setBooksList, selectedBookId, setSelectedBookId } =
     useContext(BooksContext);
 
-  useEffect(() => {
-    const selectedBook = booksList.find((b) => b.key === selectedBookId);
-    console.log(selectedBook);
-  });
+  const selectedBook = booksList.find((b) => b.key === selectedBookId);
 
-  const [title, setTitle] = useState('');
-  const [author, setAuthor] = useState('');
-  const [category, setCategory] = useState('fiction');
-  const [isbn, setIsbn] = useState('1111111111111');
-
+  const [title, setTitle] = useState(selectedBookId ? selectedBook?.title : '');
+  const [author, setAuthor] = useState(
+    selectedBookId ? selectedBook?.author : ''
+  );
+  const [category, setCategory] = useState(
+    selectedBookId ? selectedBook?.category : 'fiction'
+  );
+  const [isbn, setIsbn] = useState(
+    selectedBookId ? String(selectedBook?.isbn) : '1111111111111'
+  );
   const [hasDuplicateError, setHasDuplicateError] = useState(false);
   const [hasIsbnError, setHasIsbnError] = useState(false);
 
@@ -42,18 +46,50 @@ const BookForm: React.FC<Props> = ({ type }) => {
     const newBook: Book = {
       // compose the object with values from inputs
       key: +isbn,
-      title: title,
+      title: title || '', // did this to avoid TS error
       status: 'active',
-      author: author,
-      category: category,
+      author: author || '',
+      category: category || 'fiction',
       isbn: +isbn,
-      created_at: '12 March 2022, 8:35pm',
+      created_at: formatDate(),
       edited_at: "hasn't been updated yet",
     };
 
-    setBooksList((prev) => [...prev, newBook]); // add this object to the end of the list
-    navigate('/'); // return to homepage
-    alert('Successfully added new book!');
+    postBookToServer(newBook)
+      .then(() => {
+        setBooksList((prev) => [...prev, newBook]); // add this object to the end of the list
+        navigate('/'); // return to homepage
+        alert('Successfully added new book!');
+      })
+      .catch((err) => {
+        alert(err);
+      });
+  }
+
+  function handleEdit() {
+    if (!selectedBook) return;
+
+    if (isbn.length !== 13) {
+      setHasIsbnError(true);
+      return;
+    }
+
+    const updatedBook: Book = {
+      ...selectedBook,
+      title: title || '',
+      author: author || '',
+      category: category || '',
+      isbn: +isbn,
+      edited_at: formatDate(),
+    };
+
+    const updatedBooksList = booksList.map((book) =>
+      book.key === selectedBookId ? updatedBook : book
+    );
+
+    setBooksList(updatedBooksList);
+    navigate('/');
+    alert('Successfully edited the book!');
   }
 
   function handleInputChange(state: string, newValue: string) {
@@ -82,7 +118,7 @@ const BookForm: React.FC<Props> = ({ type }) => {
         <h1>{type === 'addNew' ? 'Add a new book' : 'Edit the book'}</h1>
       </header>
 
-      <Form onFinish={handleAddNew}>
+      <Form onFinish={type === 'addNew' ? handleAddNew : handleEdit}>
         <Form.Item label="Title" required>
           <Input
             type="text"
@@ -137,7 +173,9 @@ const BookForm: React.FC<Props> = ({ type }) => {
             {type === 'addNew' ? 'Add the book' : 'Edit the book'}
           </Button>
           <Link to="/">
-            <Button>Return to dashboard</Button>
+            <Button onClick={() => setSelectedBookId(0)}>
+              Return to dashboard
+            </Button>
           </Link>
         </div>
       </Form>

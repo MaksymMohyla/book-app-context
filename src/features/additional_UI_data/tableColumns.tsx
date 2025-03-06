@@ -6,7 +6,7 @@ import { Book } from '../types';
 import { Link } from 'react-router-dom';
 
 export const useTableColumns = () => {
-  function deleteBook(
+  function handleDeleteBook(
     record: Book,
     booksList: Book[],
     setBooksList: Dispatch<SetStateAction<Book[]>>
@@ -14,7 +14,7 @@ export const useTableColumns = () => {
     setBooksList(booksList.filter((b) => b.key !== record.key));
   }
 
-  function changeStatus(
+  function handleChangeStatus(
     record: Book,
     booksList: Book[],
     setBooksList: Dispatch<SetStateAction<Book[]>>
@@ -82,14 +82,16 @@ export const useTableColumns = () => {
 
             <Button
               type="primary"
-              onClick={() => deleteBook(record, booksList, setBooksList)}
+              onClick={() => handleDeleteBook(record, booksList, setBooksList)}
             >
               Delete
             </Button>
 
             <Button
               type="primary"
-              onClick={() => changeStatus(record, booksList, setBooksList)}
+              onClick={() =>
+                handleChangeStatus(record, booksList, setBooksList)
+              }
             >
               {record.status === 'active' ? 'Deactivate' : 'Activate'}
             </Button>

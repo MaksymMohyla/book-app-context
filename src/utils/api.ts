@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-const BASE_URL = 'https://api.jsonbin.io/v3'; // free service for storing JSON data
+const BASE_URL = 'http://localhost:3000/'; // local server provided with library json-server
 
 type RequestMethod = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
 
@@ -14,16 +14,10 @@ function request<T>(
     options.body = JSON.stringify(data);
     options.headers = {
       'Content-Type': 'application/json',
-      'X-Master-Key':
-        '$2a$10$D5N9sKTEB9OgooFcrVceVudcZ9o6dVsjnf.QqqKWkXvA2DM0k5JwC',
     };
   }
 
-  return fetch(BASE_URL + url, options)
-    .then((response) => response.json())
-    .catch((err) => {
-      throw err;
-    });
+  return fetch(BASE_URL + url, options).then((response) => response.json());
 }
 
 export const client = {
