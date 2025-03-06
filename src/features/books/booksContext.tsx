@@ -1,24 +1,12 @@
-import React, { createContext, useState } from 'react';
+import { createContext, Dispatch, SetStateAction } from 'react';
 import { Book } from '../types';
 
-export const BooksContext = createContext<
-  | {
-      booksList: Book[];
-      setBooksList: React.Dispatch<React.SetStateAction<Book[]>>;
-    }
-  | []
->([]);
-
-type Props = {
-  children: React.ReactNode;
+type BooksContext = {
+  booksList: Book[];
+  setBooksList: Dispatch<SetStateAction<Book[]>>;
 };
 
-export const BooksProvider: React.FC<Props> = ({ children }) => {
-  const [booksList, setBooksList] = useState<Book[]>([]);
-
-  return (
-    <BooksContext.Provider value={{ booksList, setBooksList }}>
-      {children}
-    </BooksContext.Provider>
-  );
-};
+export const BooksContext = createContext<BooksContext>({
+  booksList: [],
+  setBooksList: () => {},
+});
