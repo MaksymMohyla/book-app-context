@@ -1,12 +1,23 @@
+import st from './BookForm.module.less';
 import { Button, Form, Input, Select } from 'antd';
-import st from './AddNew.module.less';
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { Book } from '../../features/types';
 import { Link, useNavigate } from 'react-router-dom';
 import { BooksContext } from '../../features/books/booksContext';
 
-const AddNew = () => {
-  const { booksList, setBooksList } = useContext(BooksContext);
+type Props = {
+  type: 'addNew' | 'edit';
+};
+
+const BookForm: React.FC<Props> = ({ type }) => {
+  const { booksList, setBooksList, selectedBookId, setSelectedBookId } =
+    useContext(BooksContext);
+
+  useEffect(() => {
+    const selectedBook = booksList.find((b) => b.key === selectedBookId);
+    console.log(selectedBook);
+  });
+
   const [title, setTitle] = useState('');
   const [author, setAuthor] = useState('');
   const [category, setCategory] = useState('fiction');
@@ -17,7 +28,7 @@ const AddNew = () => {
 
   const navigate = useNavigate();
 
-  function handleSubmit() {
+  function handleAddNew() {
     if (booksList.some((b) => b.isbn === +isbn)) {
       setHasDuplicateError(true);
       return;
@@ -31,10 +42,10 @@ const AddNew = () => {
     const newBook: Book = {
       // compose the object with values from inputs
       key: +isbn,
-      title,
+      title: title,
       status: 'active',
-      author,
-      category,
+      author: author,
+      category: category,
       isbn: +isbn,
       created_at: '12 March 2022, 8:35pm',
       edited_at: "hasn't been updated yet",
@@ -68,10 +79,10 @@ const AddNew = () => {
   return (
     <>
       <header className={st.title}>
-        <h1>Add a new book</h1>
+        <h1>{type === 'addNew' ? 'Add a new book' : 'Edit the book'}</h1>
       </header>
 
-      <Form onFinish={handleSubmit}>
+      <Form onFinish={handleAddNew}>
         <Form.Item label="Title" required>
           <Input
             type="text"
@@ -123,7 +134,7 @@ const AddNew = () => {
 
         <div className={st.buttons}>
           <Button type="primary" htmlType="submit">
-            Add the book
+            {type === 'addNew' ? 'Add the book' : 'Edit the book'}
           </Button>
           <Link to="/">
             <Button>Return to dashboard</Button>
@@ -146,4 +157,4 @@ const AddNew = () => {
   );
 };
 
-export default AddNew;
+export default BookForm;

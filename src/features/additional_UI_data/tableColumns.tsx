@@ -1,7 +1,9 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import { Button, Space } from 'antd';
 import { Dispatch, SetStateAction, useContext } from 'react';
 import { BooksContext } from '../books/booksContext';
 import { Book } from '../types';
+import { Link } from 'react-router-dom';
 
 export const useTableColumns = () => {
   function deleteBook(
@@ -24,6 +26,7 @@ export const useTableColumns = () => {
     );
     setBooksList(updatedBooksList);
   }
+
   return [
     {
       title: 'Title',
@@ -64,11 +67,18 @@ export const useTableColumns = () => {
       title: 'Actions',
       key: 'actions',
       render: (_: string, record: Book) => {
-        // eslint-disable-next-line react-hooks/rules-of-hooks
-        const { booksList, setBooksList } = useContext(BooksContext);
+        const { booksList, setBooksList, setSelectedBookId } =
+          useContext(BooksContext);
         return (
           <Space direction="vertical">
-            <Button type="primary">Edit</Button>
+            <Link to="edit">
+              <Button
+                type="primary"
+                onClick={() => setSelectedBookId(record.key)}
+              >
+                Edit
+              </Button>
+            </Link>
 
             <Button
               type="primary"
