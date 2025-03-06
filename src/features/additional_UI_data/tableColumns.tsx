@@ -17,7 +17,7 @@ export const useTableColumns = () => {
     booksList: Book[],
     setBooksList: Dispatch<SetStateAction<Book[]>>
   ) {
-    const updatedBooksList = booksList.map((book) =>
+    const updatedBooksList: Book[] = booksList.map((book) =>
       book.key === record.key
         ? { ...book, status: book.status === 'active' ? 'unactive' : 'active' }
         : book

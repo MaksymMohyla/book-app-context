@@ -8,9 +8,12 @@ type Props = {
 
 export const BooksProvider: React.FC<Props> = ({ children }) => {
   const [booksList, setBooksList] = useState<Book[]>([]);
+  const [selectedBookId, setSelectedBookId] = useState(0);
 
   return (
-    <BooksContext.Provider value={{ booksList, setBooksList }}>
+    <BooksContext.Provider
+      value={{ booksList, setBooksList, selectedBookId, setSelectedBookId }}
+    >
       {children}
     </BooksContext.Provider>
   );
