@@ -4,6 +4,7 @@ import { Dispatch, SetStateAction, useContext } from 'react';
 import { BooksContext } from '../books/booksContext';
 import { Book } from '../types';
 import { Link } from 'react-router-dom';
+import { deleteBookFromServer, updateBookOnServer } from '../books/booksApi';
 
 export const useTableColumns = () => {
   function handleDeleteBook(
@@ -11,7 +12,12 @@ export const useTableColumns = () => {
     booksList: Book[],
     setBooksList: Dispatch<SetStateAction<Book[]>>
   ) {
-    setBooksList(booksList.filter((b) => b.key !== record.key));
+    deleteBookFromServer(record.id)
+      .then(() => {
+        setBooksList(booksList.filter((b) => b.key !== record.key));
+        alert('Successfully deleted book!');
+      })
+      .catch((err) => alert(err));
   }
 
   function handleChangeStatus(
@@ -24,7 +30,13 @@ export const useTableColumns = () => {
         ? { ...book, status: book.status === 'active' ? 'unactive' : 'active' }
         : book
     );
-    setBooksList(updatedBooksList);
+    updateBookOnServer(record.id, {
+      status: record.status === 'active' ? 'unactive' : 'active',
+    })
+      .then(() => {
+        setBooksList(updatedBooksList);
+      })
+      .catch((err) => alert(err));
   }
 
   return [

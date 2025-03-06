@@ -5,7 +5,10 @@ import { Book } from '../../features/types';
 import { Link, useNavigate } from 'react-router-dom';
 import { BooksContext } from '../../features/books/booksContext';
 import { formatDate } from '../../utils/formatDate';
-import { postBookToServer } from '../../features/books/booksApi';
+import {
+  postBookToServer,
+  updateBookOnServer,
+} from '../../features/books/booksApi';
 
 type Props = {
   type: 'addNew' | 'edit';
@@ -43,7 +46,8 @@ const BookForm: React.FC<Props> = ({ type }) => {
       return;
     }
 
-    const newBook: Book = {
+    const newBook: Omit<Book, 'id'> = {
+      // id is generated automaticly
       // compose the object with values from inputs
       key: +isbn,
       title: title || '', // did this to avoid TS error
@@ -57,7 +61,8 @@ const BookForm: React.FC<Props> = ({ type }) => {
 
     postBookToServer(newBook)
       .then(() => {
-        setBooksList((prev) => [...prev, newBook]); // add this object to the end of the list
+        // @ts-expect-error - TS is mad about id but it is generated with json server lib
+        setBooksList((prev) => [...prev, newBook]);
         navigate('/'); // return to homepage
         alert('Successfully added new book!');
       })
@@ -87,9 +92,13 @@ const BookForm: React.FC<Props> = ({ type }) => {
       book.key === selectedBookId ? updatedBook : book
     );
 
-    setBooksList(updatedBooksList);
-    navigate('/');
-    alert('Successfully edited the book!');
+    updateBookOnServer(updatedBook.id, updatedBook)
+      .then(() => {
+        setBooksList(updatedBooksList);
+        navigate('/');
+        alert('Successfully edited the book!');
+      })
+      .catch((err) => alert(err));
   }
 
   function handleInputChange(state: string, newValue: string) {
@@ -169,11 +178,14 @@ const BookForm: React.FC<Props> = ({ type }) => {
         </Form.Item>
 
         <div className={st.buttons}>
-          <Button type="primary" htmlType="submit">
+          <Button type="primary" htmlType="submit" className="antd-button">
             {type === 'addNew' ? 'Add the book' : 'Edit the book'}
           </Button>
           <Link to="/">
-            <Button onClick={() => setSelectedBookId(0)}>
+            <Button
+              onClick={() => setSelectedBookId(0)}
+              className="antd-button"
+            >
               Return to dashboard
             </Button>
           </Link>

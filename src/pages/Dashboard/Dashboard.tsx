@@ -43,7 +43,7 @@ const Dashboard = () => {
             trigger={['click']}
             className={st.header__dropdown}
           >
-            <Button type="primary">
+            <Button type="primary" className="antd-button">
               <Space>Show {selectedFilter} ▼</Space>
             </Button>
           </Dropdown>
@@ -55,7 +55,7 @@ const Dashboard = () => {
           )}
 
           <Link to="addNew">
-            <Button type="primary">
+            <Button type="primary" className="antd-button">
               <Space>Add a new book</Space>
             </Button>
           </Link>
