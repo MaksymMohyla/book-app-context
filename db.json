@@ -1,36 +1,36 @@
 {
   "books": [
     {
-      "id": "e122",
-      "key": 1111111111110,
-      "title": "kdlfjs",
+      "id": "47a9",
+      "key": 9780743273565,
+      "title": "The Great Gatsby - edited.",
       "status": "active",
-      "author": "lk98шфіашщ",
+      "author": "F. Scott Fitzgerald",
       "category": "fiction",
-      "isbn": 1111111111110,
-      "created_at": "6 March 2025, 3.15pm",
-      "edited_at": "6 March 2025, 4.44pm"
+      "isbn": 9780743273565,
+      "created_at": "6 March 2025, 4.55pm",
+      "edited_at": "6 March 2025, 4.57pm"
     },
     {
-      "id": "1276",
-      "key": 1111111111118,
-      "title": "sdklfj",
+      "id": "f16e",
+      "key": 9780061120084,
+      "title": "To Kill a Mockingbird",
       "status": "active",
-      "author": "sdlfj",
+      "author": "Harper Lee",
       "category": "fiction",
-      "isbn": 1111111111118,
-      "created_at": "6 March 2025, 3.31pm",
-      "edited_at": "6 March 2025, 4.44pm"
+      "isbn": 9780061120084,
+      "created_at": "6 March 2025, 4.56pm",
+      "edited_at": "hasn't been updated yet"
     },
     {
-      "id": "4cce",
-      "key": 1111111111111,
-      "title": "dslkfj",
+      "id": "40c1",
+      "key": 9780451524935,
+      "title": "1984",
       "status": "active",
-      "author": "lsdjf",
-      "category": "fiction",
-      "isbn": 1111111111111,
-      "created_at": "6 March 2025, 3.44pm",
+      "author": "George Orwell",
+      "category": "non-fiction",
+      "isbn": 9780451524935,
+      "created_at": "6 March 2025, 4.57pm",
       "edited_at": "hasn't been updated yet"
     }
   ],
