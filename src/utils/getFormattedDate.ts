@@ -13,7 +13,5 @@ export function getFormattedDate() {
   const hours12 = hours % 12 || 12;
   const period = hours < 12 ? 'am' : 'pm';
 
-  const formattedDate = `${day} ${month} ${year}, ${hours12}.${minutes}${period}`;
-
-  return formattedDate;
+  return `${day} ${month} ${year}, ${hours12}.${minutes}${period}`;
 }

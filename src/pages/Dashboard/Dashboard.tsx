@@ -1,14 +1,10 @@
 import { Button, Dropdown, Space, Table } from 'antd';
 import st from './Dashboard.module.less';
-import { useContext, useState } from 'react';
-import {
-  DropDownVariants,
-  useDropDownItems,
-} from '../../features/additional_UI_data/dropDownItems';
-import { useTableColumns } from '../../features/additional_UI_data/tableColumns';
-import { Book } from '../../features/types';
+import { useContext, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { BooksContext } from '../../features/books/booksContext';
+import { DropDownVariants } from '../../features/types';
+import { useDropDownItems, useTableColumns } from '../../app/hooks';
 
 const Dashboard = () => {
   const { booksList } = useContext(BooksContext);
@@ -18,7 +14,7 @@ const Dashboard = () => {
   const items = useDropDownItems(selectedFilter, setSelectedFilter);
   const columns = useTableColumns(); // manipulate buttons logic is in this hook
 
-  function getVisibleBooks() {
+  const data = useMemo(() => {
     return booksList.filter((book) => {
       switch (selectedFilter) {
         case 'active':
@@ -29,9 +25,7 @@ const Dashboard = () => {
           return true;
       }
     });
-  }
-
-  const data: Book[] = getVisibleBooks();
+  }, [booksList, selectedFilter]);
 
   return (
     <>

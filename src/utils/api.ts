@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 const BASE_URL = 'http://localhost:3000/'; // local server provided with library json-server
 
-type RequestMethod = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
+type RequestMethod = 'GET' | 'POST' | 'PATCH' | 'DELETE';
 
 function request<T>(
   url: string,
@@ -23,7 +23,6 @@ function request<T>(
 export const client = {
   get: <T>(url: string) => request<T>(url),
   post: <T>(url: string, data: any) => request<T>(url, 'POST', data),
-  put: <T>(url: string, data: any) => request<T>(url, 'PUT', data),
   patch: <T>(url: string, data: any) => request<T>(url, 'PATCH', data),
   delete: (url: string) => request(url, 'DELETE'),
 };

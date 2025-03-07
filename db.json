@@ -9,7 +9,7 @@
       "category": "fiction",
       "isbn": 9780743273565,
       "created_at": "6 March 2025, 4.55pm",
-      "edited_at": "6 March 2025, 4.57pm"
+      "edited_at": "7 March 2025, 12.45pm"
     },
     {
       "id": "f16e",
@@ -20,18 +20,29 @@
       "category": "fiction",
       "isbn": 9780061120084,
       "created_at": "6 March 2025, 4.56pm",
-      "edited_at": "hasn't been updated yet"
+      "edited_at": "7 March 2025, 12.45pm"
     },
     {
       "id": "40c1",
       "key": 9780451524935,
       "title": "1984",
-      "status": "active",
+      "status": "unactive",
       "author": "George Orwell",
       "category": "non-fiction",
       "isbn": 9780451524935,
       "created_at": "6 March 2025, 4.57pm",
-      "edited_at": "hasn't been updated yet"
+      "edited_at": "7 March 2025, 12.45pm"
+    },
+    {
+      "id": "a787",
+      "key": 1111111111111,
+      "title": "You don't know JS",
+      "status": "unactive",
+      "author": "Kyle Simpson",
+      "category": "science",
+      "isbn": 1111111111111,
+      "created_at": "7 March 2025, 12.45pm",
+      "edited_at": "7 March 2025, 12.46pm"
     }
   ],
   "profile": {

@@ -1,7 +1,7 @@
 import st from './BookForm.module.less';
 import { Button, Form, Input, Select } from 'antd';
 import { useContext, useState } from 'react';
-import { Book } from '../../features/types';
+import { Book, BookStatus } from '../../features/types';
 import { Link, useNavigate } from 'react-router-dom';
 import { BooksContext } from '../../features/books/booksContext';
 import { getFormattedDate } from '../../utils/getFormattedDate';
@@ -20,16 +20,14 @@ const BookForm: React.FC<Props> = ({ type }) => {
 
   const selectedBook = booksList.find((b) => b.key === selectedBookId);
 
-  const [title, setTitle] = useState(selectedBookId ? selectedBook?.title : '');
-  const [author, setAuthor] = useState(
-    selectedBookId ? selectedBook?.author : ''
-  );
-  const [category, setCategory] = useState(
-    selectedBookId ? selectedBook?.category : 'fiction'
-  );
-  const [isbn, setIsbn] = useState(
-    selectedBookId ? String(selectedBook?.isbn) : '1111111111111'
-  );
+  const [formData, setFormData] = useState({
+    title: selectedBookId ? selectedBook?.title : '',
+    author: selectedBookId ? selectedBook?.author : '',
+    category: selectedBookId ? selectedBook?.category : 'fiction',
+    isbn: selectedBookId ? String(selectedBook?.isbn) : '1111111111111',
+  });
+  const { title, author, category, isbn } = formData;
+
   const [hasDuplicateError, setHasDuplicateError] = useState(false);
   const [hasIsbnError, setHasIsbnError] = useState(false);
 
@@ -51,7 +49,7 @@ const BookForm: React.FC<Props> = ({ type }) => {
       // compose the object with values from inputs
       key: +isbn,
       title: title || '', // did this to avoid TS error
-      status: 'active',
+      status: BookStatus.active,
       author: author || '',
       category: category || 'fiction',
       isbn: +isbn,
@@ -61,8 +59,7 @@ const BookForm: React.FC<Props> = ({ type }) => {
 
     postBookToServer(newBook)
       .then(() => {
-        // @ts-expect-error - TS is mad about id but it is generated with json server lib
-        setBooksList((prev) => [...prev, newBook]);
+        setBooksList((prev) => [...prev, newBook] as Book[]);
         navigate('/'); // return to homepage
         alert('Successfully added new book!');
       })
@@ -104,16 +101,16 @@ const BookForm: React.FC<Props> = ({ type }) => {
   function handleInputChange(state: string, newValue: string) {
     switch (state) {
       case 'title':
-        setTitle(newValue);
+        setFormData({ ...formData, title: newValue });
         break;
       case 'author':
-        setAuthor(newValue);
+        setFormData({ ...formData, author: newValue });
         break;
       case 'category':
-        setCategory(newValue);
+        setFormData({ ...formData, category: newValue });
         break;
       case 'isbn':
-        setIsbn(newValue);
+        setFormData({ ...formData, isbn: newValue });
         break;
     }
 
